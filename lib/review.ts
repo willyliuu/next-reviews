@@ -1,11 +1,11 @@
+import 'server-only';
+
 import { marked } from "marked";
-import { readdir, readFile } from "node:fs/promises";
-import matter from "gray-matter";
 import qs from 'qs';
 
 export const CACHE_TAG_REVIEWS = 'reviews';
 
-const CMS_URL = `http://localhost:1337`;
+const CMS_URL = process.env.CMS_URL;
 
 // export async function getFeaturedReview() {
 //   const review = await getReviews(1);
@@ -125,6 +125,6 @@ function toReview(item: Record<string, any>) {
     title: attributes.title,
     subtitle: attributes.subtitle,
     date: attributes.publishedAt.slice(0, 'yyy-mm-dd'.length),
-    image: CMS_URL + attributes.image.data.attributes.url,
+    image: new URL(attributes.image.data.attributes.url, CMS_URL).href,
   }
 }
