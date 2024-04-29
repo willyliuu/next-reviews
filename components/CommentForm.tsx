@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 export default function CommentForm({slug, title}) {
   async function action(formData: FormData) {
     'use server';
+    if (!formData.get('user')) {
+      return { isError: true, message: 'Name field is required' };
+    }
     const message = await createComment({
       slug,
       user: formData.get('user'),
@@ -24,13 +27,13 @@ export default function CommentForm({slug, title}) {
         <label htmlFor="userField" className="shrink-0 w-32">
           Your name
         </label>
-        <input id="userField" name="user" className="border px-2 py-1 rounded w-48" />
+        <input id="userField" name="user" required maxLength={50} className="border px-2 py-1 rounded w-48" />
       </div>
       <div className="flex">
         <label htmlFor="messageField" className="shrink-0 w-32">
           Your comment
         </label>
-        <textarea id="messageField" name="message" className="border px-2 py-1 rounded w-full" />
+        <textarea id="messageField" name="message" required maxLength={500} className="border px-2 py-1 rounded w-full" />
       </div>
       <button type="submit"
         className="bg-orange-800 rounded px-2 py-1 self-center text-slate-50 w-32 hover:bg-orange-700">
