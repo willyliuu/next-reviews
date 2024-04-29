@@ -1,4 +1,5 @@
 import { createComment } from "@/lib/comments";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export default function CommentForm({slug, title}) {
@@ -10,6 +11,7 @@ export default function CommentForm({slug, title}) {
       message: formData.get('message'),
     });
     console.log('created:', message);
+    revalidatePath(`/reviews/${slug}`);
     redirect(`/reviews/${slug}`);
   }
 
