@@ -1,15 +1,21 @@
 'use client';
 
 import { createCommentAction } from "@/app/reviews/[slug]/actions";
-import { FormEvent } from "react";
+import { useState } from "react";
 
 export default function CommentForm({slug, title}) {
+  const [error, setError] = useState(null);
+
   const handleSubmit = async (event: any) => {
     event.preventDefault()
     const form: HTMLFormElement = event.currentTarget;
     const formData = new FormData(form);
     const result = await createCommentAction(formData)
-    console.log("result:", result)
+    if (result?.isError) {
+      setError(result);
+    } else {
+      form.reset();
+    }
   }
 
   return (
@@ -30,6 +36,9 @@ export default function CommentForm({slug, title}) {
         </label>
         <textarea id="messageField" name="message" maxLength={500} className="border px-2 py-1 rounded w-full" />
       </div>
+      {Boolean(error) && (
+        <p className="text-red-700">{error.message}</p>
+      )}
       <button type="submit"
         className="bg-orange-800 rounded px-2 py-1 self-center text-slate-50 w-32 hover:bg-orange-700">
         Submit
