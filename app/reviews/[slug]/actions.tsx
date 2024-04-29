@@ -25,7 +25,7 @@ function validate(data: any) {
     return "Name field is required";
   }
 
-  if (data.user.length > 5) {
+  if (data.user.length > 50) {
     return 'Name field cannot be longer than 50 characters';
   }
 
