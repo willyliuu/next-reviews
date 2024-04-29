@@ -1,4 +1,5 @@
 import { createComment } from "@/lib/comments";
+import { redirect } from "next/navigation";
 
 export default function CommentForm({slug, title}) {
   async function action(formData: FormData) {
@@ -9,6 +10,7 @@ export default function CommentForm({slug, title}) {
       message: formData.get('message'),
     });
     console.log('created:', message);
+    redirect(`/reviews/${slug}`);
   }
 
   return (
